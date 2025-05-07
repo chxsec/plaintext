@@ -22,24 +22,28 @@ Get-ConstrainedDelegation -CheckOrphaned
         $global:outputCollection = @()
 
         # Buscar computadoras y usuarios con delegación restringida
+        # Find computers and users with restricted delegation
         $computerDelegations = Get-DomainComputer -TrustedToAuth
         $userDelegations = Get-DomainUser -TrustedToAuth
 
         # Procesar computadoras
+        # Process computers
         foreach ($computer in $computerDelegations) {
             ProcessDelegation -Object $computer -Type 'Computer'
         }
 
         # Procesar usuarios
+        # Process users
         foreach ($user in $userDelegations) {
             ProcessDelegation -Object $user -Type 'User'
         }
 
         # Mostrar resultados
+        # Show results
         if ($outputCollection.Count -gt 0) {
             $outputCollection | Format-Table -AutoSize
         } else {
-            Write-Host "No se encontraron objetos con delegación restringida." -ForegroundColor Green
+            Write-Host "No objects with restricted delegation were found!" -ForegroundColor Green
         }
     }
 }
